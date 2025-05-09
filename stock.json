@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Coca Cola",
+        "description": "Fizzy Drink",
+        "price": 1.5,
+        "type": "Drink",
+        "hot": false,
+        "amount": 350
+    },
+    {
+        "name": "Donut",
+        "description": "A chocolate glazed donut",
+        "price": 4.5,
+        "type": "Food",
+        "weight": 300
+    },
+    {
+        "name": "Mocha",
+        "description": "Coffee with cocoa",
+        "price": 3.5,
+        "type": "Drink",
+        "hot": true,
+        "amount": 400
+    },
+    {
+        "name": "Alice in Wonderland",
+        "description": "A girl on an adventure",
+        "price": 15,
+        "type": "Book",
+        "author": "Carol"
+    }
+]
