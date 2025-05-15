@@ -12,12 +12,13 @@ def welcome_screen():
 		print_sep()
 		print("1. View the Menu")
 		print("2. Order")
-		print("3 Checkout")
-		print("4. Exit")
+		print("3. View Cart")
+		print("4. Checkout")
+		print("5. Exit")
 
 		selection = input("Enter one of the numbers\n")
 
-		if selection.isdigit() and int(selection) <= 3:
+		if selection.isdigit() and int(selection) <= 5:
 			return int(selection)
 		else:
 			print("\nThat wasn't one of the options, try again \n")
@@ -62,7 +63,7 @@ def order_screen(cart, stock):
 		print("4. Check Food menu")
 		print("5. Return to main menu\n")
 		order_selection = input("Enter the number of the chosen selection\n")
-		if order_selection.isdigit() and int(order_selection) in range(1,5):
+		if order_selection.isdigit() and int(order_selection) in range(1,6):
 			order_selection = int(order_selection)
 		else:
 			print("Invalid input")
@@ -74,33 +75,72 @@ def order_screen(cart, stock):
 					item = stock.return_item_by_name(addition)
 					if item:
 						cart.add_item(item)
-						break
 					else:
 						print("No such item")
+					print(cart.calculate_total())
+					break
 			case 2:
 				view_drink_menu()
 			case 3:
 				view_book_menu()
 			case 4:
 				view_food_menu()
+			case 5:
+				return cart
+
+def checkout(cart):
+	"""
+	Checkout function, takes in user cart and calculates total.
+	Allows user to confirm they're ready to pay.
+	"""
+	while True:
+		print("Checkout")
+		print(f"Your total is: £{cart.calculate_total()}")
+		print("Are you ready to pay?")
+		print("1. Yes")
+		print("2. Return to main menu")
+		check_selection = input("Enter one of the numbers\n")
+		if check_selection.isdigit() and int(check_selection) in range(1,3):
+			check_selection = int(check_selection)
+			break
+		else:
+			print("Invalid input")
+	if check_selection == 1:
+		print("Thank you for shopping with us!")
+		return True
+	else:
+		return False
+
+def show_cart(cart):
+	print_sep()
+	if len(cart.return_items()) < 1:
+		print("Your cart is empty right now")
+		return
+	print("Your Cart")
+	for item in cart.return_items():
+		print_sep()
+		item.describe()
 		
 # Console Interface
 print("Welcome to the Cafe!")
+# Create Stock object
+available_stock = Stock()
+# Creat Order object
+user_cart = Cart()
 while True:
-	# Create Stock object
-	available_stock = Stock()
 	available_stock.load_from_json()
-	# Creat Order object
-	user_cart = Cart()
 	# Launch the welcome screen
 	selection = welcome_screen()
 	match selection:
 		case 1:
 			view_menu_screen()
 		case 2:
-			order_screen(user_cart, available_stock)
-			print(user_cart.calculate_total())
+			user_cart = order_screen(user_cart, available_stock)
 		case 3:
-			break # add checkout
+			show_cart(user_cart)
 		case 4:
+			exit_orders = checkout(user_cart)
+			if exit_orders:
+				break
+		case 5:
 			break
