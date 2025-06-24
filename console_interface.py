@@ -1,9 +1,25 @@
 from stock import Stock
 from cart import Cart
+import employeeMenus as em
 from items.menu_item import *
 
 def print_sep():
 	print("-----------------------------")
+
+def employee_or_customer():
+	print_sep()
+	print("Welcome to the Cafe!")
+	print_sep()
+	print("Would you like to enter the customer order screen or employee functions?")
+	print_sep()
+	print("1. Customer Order Screen")
+	print("2. Employee Functions\n")
+	print("3. Exit\n")
+	selection = input("Enter one of the numbers\n")
+	if selection.isdigit() and int(selection) in range(1,4):
+		return int(selection)
+	else:
+		print("Invalid input")
 
 def welcome_screen():
 	print_sep()
@@ -24,11 +40,15 @@ def welcome_screen():
 			print("\nThat wasn't one of the options, try again \n")
 
 def view_menu_screen():
-	print("\nThe menu options are:")
-	for item in available_stock.return_stock():
+	if len(available_stock.return_stock()) < 1:
 		print_sep()
-		item.describe()
-	print_sep()
+		print("There are no items in stock at the moment")
+	else:
+		print("\nThe menu options are:")
+		for item in available_stock.return_stock():
+			print_sep()
+			item.describe()
+		print_sep()
 
 def view_drink_menu():
 	print("\nThe drink menu options are:")
@@ -122,25 +142,39 @@ def show_cart(cart):
 		item.describe()
 		
 # Console Interface
-print("Welcome to the Cafe!")
 # Create Stock object
 available_stock = Stock()
 # Creat Order object
 user_cart = Cart()
 while True:
-	available_stock.load_from_json()
-	# Launch the welcome screen
-	selection = welcome_screen()
+	available_stock.load_stock_from_database()
+	# Launch employee or welcome screen
+	selection = employee_or_customer()
+	selection = int(selection)
 	match selection:
 		case 1:
-			view_menu_screen()
+			# Launch the welcome screen
+			selection = welcome_screen()
+			match selection:
+				case 1:
+					view_menu_screen()
+				case 2:
+					user_cart = order_screen(user_cart, available_stock)
+				case 3:
+					show_cart(user_cart)
+				case 4:
+					exit_orders = checkout(user_cart)
+					if exit_orders:
+						break
+				case 5:
+					break
 		case 2:
-			user_cart = order_screen(user_cart, available_stock)
+			selection = em.employee_welcome_screen(available_stock)
+			match selection:
+				case 1:
+					continue
+				case 2:
+					break
 		case 3:
-			show_cart(user_cart)
-		case 4:
-			exit_orders = checkout(user_cart)
-			if exit_orders:
-				break
-		case 5:
+			print("Goodbye!")
 			break

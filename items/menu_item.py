@@ -1,5 +1,6 @@
 class Menu_item():
-	def __init__(self, name, description, price):
+	def __init__(self, id=None, name=None, description=None, price=None):
+		self.id = id
 		self.name = name
 		self.description = description
 		self.price = price
@@ -15,6 +16,12 @@ class Menu_item():
 	def return_type(self):
 		return self.type
 
+	def return_id(self):
+		return self.id
+
+	def return_tuple(self):
+		return (self.name, self.description, self.price)
+
 	def to_json(self):
 		return {
 		"name":self.name,
@@ -24,8 +31,8 @@ class Menu_item():
 		}
 
 class Drink(Menu_item):
-	def __init__(self, name, description, price, hot, amount):
-		super().__init__(name, description, price)
+	def __init__(self, id, name, description, price, hot, amount):
+		super().__init__(id, name, description, price)
 		self.hot = hot
 		self.amount = amount
 		self.type = "Drink"
@@ -37,9 +44,12 @@ class Drink(Menu_item):
 		print(f"{self.type} | {self.name} - {self.amount} ml | £{self.get_price():.2f} | £/litre {self.price_per_litre():.2f}")
 		print(f"Description: {self.description}")
 		if self.hot:
-			print("Drink is hot")
+			print("Hot Drink")
 		else:
-			print("Drink is cold")
+			print("Cold Drink")
+
+	def return_tuple(self):
+		return (self.name, self.description, self.price, self.hot, self.amount)
 
 	def to_json(self):
 		return {
@@ -53,14 +63,17 @@ class Drink(Menu_item):
 
 class Book(Menu_item):
 	"""docstring for Book"""
-	def __init__(self, name, description, price, author):
-		super().__init__(name, description, price)
+	def __init__(self, id, name, description, price, author):
+		super().__init__(id, name, description, price)
 		self.author = author
 		self.type = "Book"
 
 	def describe(self):
 		print(f"{self.type} | {self.name} - by {self.author} | £{self.get_price():.2f}")
 		print(f"Description: {self.description}")
+
+	def return_tuple(self):
+		return (self.name, self.description, self.price, self.author)
 
 	def to_json(self):
 		return {
@@ -72,8 +85,8 @@ class Book(Menu_item):
 		}
 
 class Food(Menu_item):
-	def __init__(self, name, description, price, weight):
-		super().__init__(name, description, price)
+	def __init__(self, id, name, description, price, weight):
+		super().__init__(id, name, description, price)
 		self.weight = weight
 		self.type = "Food"
 
@@ -83,6 +96,9 @@ class Food(Menu_item):
 	def describe(self):
 		print(f"{self.type} | {self.name} - {self.weight} grams | £{self.get_price():.2f} | £/kg {self.price_per_kilogram():.2f}")
 		print(f"Description: {self.description}")
+
+	def return_tuple(self):
+		return (self.name, self.description, self.price, self.weight)
 
 	def to_json(self):
 		return {
