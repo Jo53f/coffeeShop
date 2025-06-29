@@ -1,0 +1,12 @@
+services:
+  db:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: coffee_shop_db
+      MYSQL_USER: josef
+      MYSQL_PASSWORD: pass
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./mysql-init:/docker-entrypoint-initdb.d"

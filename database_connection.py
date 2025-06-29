@@ -4,9 +4,9 @@ import mysql.connector
 def database_connection():
     mydb = mysql.connector.connect(
         host="localhost",
-        port="8500",
-        user="root",
-        password="root",
+        port="3306",
+        user="josef",
+        password="pass",
         database="coffee_shop_db"
     )
     return mydb
